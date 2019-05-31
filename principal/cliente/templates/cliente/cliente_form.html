@@ -1,61 +1,57 @@
 {% load staticfiles %}
+{% load bootstrap4 %}
 {% block content %}
     {% csrf_token %}
     {{ form.non_field_errors }}
-    <form action="/your-name/" method="post">
+    <h1>Nova postagem</h1>
+    <form class="form" role="form" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
-    </form>
+        {{ form.as_p }}
 
+        <div id="formSetAnexo" class="ibox-body" aria-expanded="true">
 
+                {{ dependente_cliente.management_form }}
+                {% for form in dependente_cliente.forms %}
 
-    <div class="ibox">
-        <div class="ibox-head ibox-collapse">
-            <div class="ibox-title">Contatos Adicionais</div>
-            <div class="ibox-tools">
-                <a><i class="ibox-collapse-icon ti-angle-down"></i></a>
-            </div>
-        </div>
-        <div id="formSetContatoAdicionais" class="ibox-body" aria-expanded="true">
+                    <div class="{% cycle row1 row2 row3 row4 %} row formset_dependente_row">
 
-            {{ contatos_cliente.management_form }}
-            {% for form in contatos_cliente.forms %}
+                        {% for field in form.visible_fields %}
 
-                <div class="{% cycle row1 row2 row3 row4 %} row formset_contato_row">
+                            {# Incluindo os campos hidden do form #}
+                            {% if forloop.first %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            {% endif %}
 
-                    {% for field in form.visible_fields %}
-
-                        {# Incluindo os campos hidden do form #}
-                        {% if forloop.first %}
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                        {% endif %}
-
-
-
-                        {# Quando for a última volta do loop, inclui uma linha para separar o próximo form #}
-                        {% if forloop.last %}
-                            <div class="form-group col-sm-12">
-                                <hr>
+                            <div class="form-group col-sm-4">
+                                {% bootstrap_field field %}
+                                {{ field.errors.as_ul }}
                             </div>
-                        {% endif %}
 
-                    {% endfor %}
+                            {# Quando for a última volta do loop, inclui uma linha para separar o próximo form #}
+                            {% if forloop.last %}
+                                <div class="form-group col-sm-12">
+                                    <hr>
+                                </div>
+                            {% endif %}
 
-                </div>
-            {% endfor %}
+                        {% endfor %}
+
+                    </div>
+                {% endfor %}
 
         </div>
-    <p>Gustavo</p>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <button type="submit" class="save btn btn-default">Save</button>  
+</form>
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script src="{% static 'formSet/f.js' %}"></script>
 <script type="text/javascript">
-    // $('.formset_row').formset({
-    //     addText: 'add family member',
-    //     deleteText: 'remove',
-    //     prefix: 'familymember_set'
-    // });
+    $('.formset_dependente_row').formset({
+        addText: 'add family member',
+        deleteText: 'remove',
+        prefix: 'dependente_set'
+    });
 </script>
 {% endblock %}

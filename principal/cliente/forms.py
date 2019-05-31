@@ -33,7 +33,7 @@ from .models import Cliente
 class ClienteForm(forms.ModelForm):
     class Meta:
         model = Cliente
-        exclude = ()
+        exclude = ('slug',)
 
 
 class DependenteForm(forms.ModelForm):
@@ -52,5 +52,5 @@ class DependenteForm(forms.ModelForm):
 
 
 DependenteFormSet = inlineformset_factory(Cliente, Dependente,
-                                              fields=('descricao', 'tel_fixo', 'ramal', 'tel_celular', 'email',),
+                                              fields=('descricao',),
                                               form=DependenteForm, extra=1)

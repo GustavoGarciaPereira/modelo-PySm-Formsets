@@ -13,7 +13,7 @@ from django.contrib import messages
 
 from .models import Cliente
 from .forms import DependenteForm
-from .forms import ClienteForm
+from .forms import ClienteForm, DependenteFormSet
 
 
 
@@ -86,27 +86,27 @@ class ClienteCreateView(CreateView):
     model = Cliente
     #template_name = 'cliente/cliente_form.html'
     form_class = ClienteForm
-    #success_url = 'cliente:list'
+    success_url = 'cliente:create'
 
     def get_context_data(self, **kwargs):
         context = super(ClienteCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
-            context['contatos_cliente'] = DependenteForm(self.request.POST)
+            context['dependente_cliente'] = DependenteFormSet(self.request.POST)
         else:
-            context['contatos_cliente'] = DependenteForm()
+            context['dependente_cliente'] = DependenteFormSet()
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
-        formset_contatos = context['contatos_cliente']
+        formset_dependente = context['dependente_cliente']
 
         with transaction.atomic():
             self.object = form.save(commit=False)
             self.object.save()
 
-            if formset_contatos.is_valid():
-                formset_contatos.instance = self.object
-                formset_contatos.save()
+            if formset_dependente.is_valid():
+                formset_dependente.instance = self.object
+                formset_dependente.save()
 
 
         return super(ClienteCreateView, self).form_valid(form)
@@ -119,7 +119,6 @@ class ClienteCreateView(CreateView):
     #     form_class = self.get_form_class()
     #     return form_class(empresa=self.request.session['empresa'], **self.get_form_kwargs())
 
-    # def get_success_url(self):
-    #     messages.success(self.request, 'Cliente (PF) Criado com sucesso')
-    #     return redirecionar(self, list_url='cliente:list', create_url='cliente:pf_create',
-    #                         update_url='cliente:pf_update')
+    def get_success_url(self):
+        messages.success(self.request, 'cadastrado com sucesso!!')
+        return reverse(self.success_url)

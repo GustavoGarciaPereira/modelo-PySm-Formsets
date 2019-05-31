@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Cliente(models.Model):
@@ -19,9 +20,9 @@ class Dependente(models.Model):
     email = models.EmailField(('E-mail'), blank=True, null=True)
     slug = models.SlugField(max_length=100, blank=True, unique=True, null=True)
 
-    @property
-    def get_absolute_url(self):
-        return reverse('cliente:contato_cliente_update',kwargs={'slug':self.slug})
+    # @property
+    # def get_absolute_url(self):
+    #     return reverse('cliente:contato_cliente_update',kwargs={'slug':self.slug})
     
     @property
     def get_delete_url(self):
