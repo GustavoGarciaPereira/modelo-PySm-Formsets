@@ -1,3 +1,7 @@
+from datetime import datetime
+import hashlib
+import random
+
 from django.db import models
 from django.urls import reverse
 
@@ -8,6 +12,15 @@ class Cliente(models.Model):
     is_active = models.BooleanField(('Ativo'), default=True)
     slug = models.SlugField(max_length=100, blank=True, unique=True, null=True)
     email = models.EmailField(('E-mail'), blank=True, null=True)
+
+
+    def gerar_hash(self):
+        return hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = self.gerar_hash()
+        super(Cliente, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.nome
@@ -28,10 +41,13 @@ class Dependente(models.Model):
     def get_delete_url(self):
         return reverse('cliente:contato_cliente_delete',kwargs={'slug':self.slug})
 
-    # def save(self, *args, **kwargs):
-    #     if not self.id:
-    #         self.slug = gerar_hash()
-    #     super(Dependente, self).save(*args, **kwargs)
+    def gerar_hash(self):
+        return hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = self.gerar_hash()
+        super(Dependente, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.descricao
