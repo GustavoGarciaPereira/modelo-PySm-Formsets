@@ -21,5 +21,5 @@ class DependenteForm(forms.ModelForm):
 
 
 DependenteFormSet = inlineformset_factory(Cliente, Dependente,
-                                              fields=('descricao','tel_celular','email'),
+                                              fields=('nome','tel_celular','email'),
                                               form=DependenteForm, extra=1)

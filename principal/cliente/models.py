@@ -30,7 +30,7 @@ class Cliente(models.Model):
 
 class Dependente(models.Model):
     cliente = models.ForeignKey('Cliente',on_delete=models.PROTECT)
-    descricao = models.CharField(('Nome'), max_length=40)
+    nome = models.CharField(('Nome'), max_length=40)
     tel_celular = models.CharField(('Telefone Celular'), max_length=13, blank=True, null=True)
     email = models.EmailField(('E-mail'), blank=True, null=True)
     slug = models.SlugField(max_length=100, blank=True, unique=True, null=True)

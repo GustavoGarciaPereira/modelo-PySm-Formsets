@@ -20,7 +20,7 @@ from .forms import ClienteForm, DependenteFormSet
 class ClienteListView(ListView):
     model = Cliente
     template_name = 'cliente/cliente_list.html'
-    paginate_by = 50
+
 
 
 class ClienteCreateView(CreateView):
@@ -52,7 +52,7 @@ class ClienteCreateView(CreateView):
         return super(ClienteCreateView, self).form_valid(form)
 
     def form_invalid(self, form):
-        messages.warning(self.request, 'Não foi possível cadastrar Cliente (PF). Verifique os campos obrigatórios')
+        messages.warning(self.request, 'Não foi possível cadastrar')
         return super(ClienteCreateView, self).form_invalid(form)
 
     def get_success_url(self):
@@ -95,7 +95,7 @@ class ClienteUpdateView(UpdateView):
         return super(ClienteUpdateView, self).form_valid(form)
 
     def form_invalid(self, form):
-        messages.warning(self.request, 'Não foi possível alterar Cliente (PF). Verifique os campos obrigatórios')
+        messages.warning(self.request, 'Não foi possível alterar')
         return super(ClienteUpdateView, self).form_invalid(form)  
 
     def get_success_url(self):
