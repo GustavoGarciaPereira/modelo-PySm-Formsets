@@ -5,7 +5,6 @@ import random
 from django.db import models
 from django.urls import reverse
 
-# Create your models here.
 class Cliente(models.Model):
     nome = models.CharField(('Nome'), max_length=70)
     cidade = models.CharField(('Cidade'), max_length=70, blank=True, null=True)
@@ -17,7 +16,6 @@ class Cliente(models.Model):
     @property
     def get_list_url(self):
         return reverse('cliente:update',kwargs={'slug':self.slug})
-
 
     def gerar_hash(self):
         return hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
@@ -41,10 +39,6 @@ class Dependente(models.Model):
     def get_list_url(self):
         return reverse('cliente:update',kwargs={'slug':self.slug})
     
-    @property
-    def get_delete_url(self):
-        return reverse('cliente:contato_cliente_delete',kwargs={'slug':self.slug})
-
     def gerar_hash(self):
         return hashlib.sha256(str(random.getrandbits(256)).encode('utf-8')).hexdigest()
     

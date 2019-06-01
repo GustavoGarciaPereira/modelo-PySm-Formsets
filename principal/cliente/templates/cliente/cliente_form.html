@@ -16,6 +16,7 @@
     <title>SmPy</title>
   </head>
   <body>
+    <div class="container">
     <h1 class="text-center text-uppercase text-success bg-dark">Cadastro de cliente!!</h1>
 
    <br><br><br><br><br>
@@ -76,14 +77,14 @@
         <button type="submit" class="save btn btn-default">Salvar</button>
         <a class="btn btn-primary" href="{% url 'cliente:list' %}">Listar</a>
 </form>
-
+</div>
     <!-- Optional JavaScript -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="{% static 'formSet/f.js' %}"></script>
     <script type="text/javascript">
         $('.formset_dependente_row').formset({
-            addText: 'add family member',
-            deleteText: 'remove',
+            addText: 'Adicionar Dependente',
+            deleteText: 'Remover Dependente',
             prefix: 'dependente_set'
         });
 </script>
