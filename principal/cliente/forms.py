@@ -4,7 +4,6 @@ from django.forms import inlineformset_factory
 from django.utils.translation import ugettext_lazy as _
 
 from .models import Cliente, Dependente
-from .models import Cliente 
 
 # class ClienteListForm(forms.Form):
 #     SITUACOES = (
@@ -41,16 +40,12 @@ class DependenteForm(forms.ModelForm):
         model = Dependente
         exclude = ()
 
-    tel_fixo = forms.CharField(label="Telefone Fixo", widget=forms.TextInput(
-            attrs={'class': 'form-control mask_tel_fixo'}), max_length=13, required=False)
-
     tel_celular = forms.CharField(label="Telefone Celular", widget=forms.TextInput(
             attrs={'class': 'form-control mask_tel_celular'}), max_length=13, required=False)
 
-    ramal = forms.IntegerField(label='Ramal', required=False)
 
 
 
 DependenteFormSet = inlineformset_factory(Cliente, Dependente,
-                                              fields=('descricao','tel_fixo','tel_celular','email'),
+                                              fields=('descricao','tel_celular','email'),
                                               form=DependenteForm, extra=1)

@@ -86,7 +86,7 @@ class ClienteCreateView(CreateView):
     model = Cliente
     #template_name = 'cliente/cliente_form.html'
     form_class = ClienteForm
-    success_url = 'cliente:create'
+    success_url = 'cliente:list'
 
     def get_context_data(self, **kwargs):
         context = super(ClienteCreateView, self).get_context_data(**kwargs)
@@ -121,4 +121,52 @@ class ClienteCreateView(CreateView):
 
     def get_success_url(self):
         messages.success(self.request, 'cadastrado com sucesso!!')
+        return reverse(self.success_url)
+
+class ClienteUpdateView(UpdateView):
+    model = Cliente
+
+    form_class = ClienteForm
+    success_url = 'cliente:list'
+
+    def get_object(self, queryset=None):
+        slug = self.kwargs.get(self.slug_url_kwarg)
+        try:
+        # Get the single item from the filtered queryset
+            obj = Cliente.objects.get(slug=slug)
+        except:
+            raise Http404("Cliente não localizado")
+        return obj
+    
+    def get_context_data(self, **kwargs):
+        context = super(ClienteUpdateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['dependente_cliente'] = DependenteFormSet(self.request.POST, instance=self.object)
+        else:
+            context['dependente_cliente'] = DependenteFormSet(instance=self.object)
+        return context
+
+    # def get_form(self):
+    #     form_class = self.get_form_class()
+    #     return form_class(empresa=self.request.session['empresa'], **self.get_form_kwargs())
+    
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset_dependente = context['dependente_cliente']
+
+        with transaction.atomic():
+            self.object = form.save(commit=False)
+            self.object.save()
+
+            if formset_dependente.is_valid():
+                formset_dependente.instance = self.object
+                formset_dependente.save()
+        return super(ClienteUpdateView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.warning(self.request, 'Não foi possível alterar Cliente (PF). Verifique os campos obrigatórios')
+        return super(ClienteUpdateView, self).form_invalid(form)  
+
+    def get_success_url(self):
+        messages.success(self.request, 'Cliente alterado com sucesso')
         return reverse(self.success_url)

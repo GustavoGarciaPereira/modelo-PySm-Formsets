@@ -3,11 +3,45 @@
 {% block content %}
     {% csrf_token %}
     {{ form.non_field_errors }}
-    <h1>Nova postagem</h1>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>SmPy</title>
+  </head>
+  <body>
+    <h1 class="text-center text-uppercase text-success bg-dark">Cadastro de cliente!!</h1>
+
+   <br><br><br><br><br>
     <form class="form" role="form" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-
+        <div class="row">
+            <div class="col-sm-4 form-group mb-4">
+                {% bootstrap_field form.nome %}
+            </div>
+            <div class="col-sm-4 form-group mb-4">
+                {% bootstrap_field form.cidade %}
+            </div>
+            <div class="col-sm-4 form-group mb-4">
+                {% bootstrap_field form.tel_celular %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 form-group mb-4">
+                {% bootstrap_field form.is_active %}
+            </div>
+            <div class="col-sm-4 form-group mb-4">
+                {% bootstrap_field form.email %}
+            </div>
+        </div>
+        <br><br><br><br><br><br><br><br><br><br>
+        <p class="text-center text-uppercase text-success bg-dark">Cadastrar Dependente</p>
         <div id="formSetAnexo" class="ibox-body" aria-expanded="true">
 
                 {{ dependente_cliente.management_form }}
@@ -31,27 +65,32 @@
 
                             {# Quando for a última volta do loop, inclui uma linha para separar o próximo form #}
                             {% if forloop.last %}
-                                <div class="form-group col-sm-12">
+                                <div class="form-group col-sm-6">
                                     <hr>
                                 </div>
                             {% endif %}
-
                         {% endfor %}
-
                     </div>
                 {% endfor %}
-
         </div>
-        <button type="submit" class="save btn btn-default">Save</button>
-        <a class="btn btn-primary" href="{% url 'cliente:create' %}">Listar</a>
+        <button type="submit" class="save btn btn-default">Salvar</button>
+        <a class="btn btn-primary" href="{% url 'cliente:list' %}">Listar</a>
 </form>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script src="{% static 'formSet/f.js' %}"></script>
-<script type="text/javascript">
-    $('.formset_dependente_row').formset({
-        addText: 'add family member',
-        deleteText: 'remove',
-        prefix: 'dependente_set'
-    });
+
+    <!-- Optional JavaScript -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="{% static 'formSet/f.js' %}"></script>
+    <script type="text/javascript">
+        $('.formset_dependente_row').formset({
+            addText: 'add family member',
+            deleteText: 'remove',
+            prefix: 'dependente_set'
+        });
 </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
 {% endblock %}
